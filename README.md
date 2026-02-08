@@ -1,56 +1,27 @@
-Фитнес-приложение для упражнений
-Описание проекта
-Веб-приложение на Laravel для просмотра и управления спортивными упражнениями. Пользователи могут просматривать упражнения с подробными инструкциями по выполнению, добавлять новые упражнения, редактировать существующие и удалять их.
-
-Функционал
-Просмотр списка упражнений
-
-Детальный просмотр каждого упражнения с инструкциями
-
-Добавление новых упражнений
-
-Редактирование существующих упражнений
-
-Удаление упражнений
-
-Категоризация по группам мышц
-
-Уровни сложности (начинающий, средний, продвинутый)
-
-Поддержка упражнений на время и повторения
-
-Технологии
-Backend: Laravel 10
-
-Frontend: Bootstrap 5, Blade шаблоны
-
-База данных: PostgreSQL
-
-Контейнеризация: Docker, Docker Compose
-
-Веб-сервер: PHP built-in server
-
-Структура проекта
-text
 sport-exercises-app/
 ├── app/
-│   ├── Models/Exercise.php          # Модель упражнения
-│   └── Http/Controllers/ExerciseController.php  # Контроллер
+│ ├── Models/Exercise.php # Модель упражнения
+│ └── Http/Controllers/ExerciseController.php # Контроллер
 ├── database/
-│   ├── migrations/                  # Миграции БД
-│   └── seeders/ExerciseSeeder.php   # Начальные данные
-├── resources/views/exercises/       # Шаблоны
-│   ├── index.blade.php              # Список упражнений
-│   ├── show.blade.php               # Детали упражнения
-│   ├── create.blade.php             # Форма добавления
-│   └── edit.blade.php               # Форма редактирования
-├── routes/web.php                   # Маршруты
-├── docker-compose.yml               # Конфигурация Docker
-├── Dockerfile                       # Образ приложения
-└── .env                             # Настройки окружения
-Быстрый старт
-1. Клонирование и настройка
-bash
+│ ├── migrations/ # Миграции БД
+│ └── seeders/ExerciseSeeder.php # Начальные данные
+├── resources/views/exercises/ # Шаблоны
+│ ├── index.blade.php # Список упражнений
+│ ├── show.blade.php # Детали упражнения
+│ ├── create.blade.php # Форма добавления
+│ └── edit.blade.php # Форма редактирования
+├── routes/web.php # Маршруты
+├── docker-compose.yml # Конфигурация Docker
+├── Dockerfile # Образ приложения
+└── .env # Настройки окружения
+
+text
+
+## Быстрый старт
+
+### 1. Клонирование и настройка
+
+```bash
 # Клонируйте репозиторий (если есть)
 git clone <ваш-репозиторий>
 cd sport-exercises-app
@@ -200,153 +171,4 @@ docker-compose exec app php artisan test
 
 # Проверить состояние приложения
 docker-compose exec app php artisan about
-Решение проблем
-1. Ошибка "port already in use"
-bash
-# Остановите другие службы на портах 8000 или 5433
-# Или измените порты в docker-compose.yml
-2. Ошибка подключения к базе данных
-bash
-# Проверьте запущен ли PostgreSQL контейнер
-docker-compose ps
-
-# Проверьте логи PostgreSQL
-docker-compose logs postgres
-
-# Перезапустите контейнеры
-docker-compose restart
-3. Ошибка "Class not found"
-bash
-# Перегенерируйте автозагрузку Composer
-docker-compose exec app composer dump-autoload
-
-# Переустановите зависимости
-docker-compose exec app composer install
-4. Очистка данных
-bash
-# Удалить все упражнения
-docker-compose exec app php artisan tinker
->>> \App\Models\Exercise::truncate();
-
-# Очистить все данные (включая сессии)
-docker-compose exec app php artisan migrate:fresh
-Добавление изображений
-Способ 1: Через форму
-Перейдите на страницу создания/редактирования упражнения
-
-Используйте поле загрузки изображений
-
-Изображения сохраняются в storage/app/public/exercises/
-
-Способ 2: Вручную
-bash
-# Создайте папку для изображений
-mkdir -p storage/app/public/exercises
-
-# Скопируйте изображения
-cp ваши_изображения.jpg storage/app/public/exercises/
-
-# Создайте симлинк
-docker-compose exec app php artisan storage:link
-Миграции и обновления
-Обновление схемы базы данных
-Создайте новую миграцию:
-
-bash
-docker-compose exec app php artisan make:migration add_column_to_exercises
-Запустите миграции:
-
-bash
-docker-compose exec app php artisan migrate
-Бэкап базы данных
-bash
-# Экспорт данных
-docker-compose exec postgres pg_dump -U fitness_user fitness_db > backup.sql
-
-# Импорт данных
-docker-compose exec postgres psql -U fitness_user -d fitness_db < backup.sql
-Производственная настройка
-Настройка .env для продакшена
-env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://ваш-домен.com
-
-# Настройки безопасности
-SESSION_SECURE_COOKIE=true
-SESSION_HTTP_ONLY=true
-
-# Настройки базы данных для продакшена
-DB_HOST=production-db-host
-DB_PORT=5432
-DB_DATABASE=production_db
-DB_USERNAME=production_user
-DB_PASSWORD=сильный_пароль
-Оптимизация для продакшена
-bash
-# Оптимизация загрузки классов
-docker-compose exec app composer install --optimize-autoloader --no-dev
-
-# Кэширование конфигурации
-docker-compose exec app php artisan config:cache
-
-# Кэширование маршрутов
-docker-compose exec app php artisan route:cache
-
-# Кэширование представлений
-docker-compose exec app php artisan view:cache
-Мониторинг и логи
-Просмотр логов
-bash
-# Логи приложения
-docker-compose exec app tail -f storage/logs/laravel.log
-
-# Логи веб-сервера
-docker-compose logs app -f
-
-# Логи базы данных
-docker-compose logs postgres -f
-Проверка здоровья приложения
-bash
-# Проверить доступность приложения
-curl http://localhost:8000/health
-
-# Проверить подключение к базе
-docker-compose exec app php artisan db:monitor
-Вклад в проект
-Стиль кода
-Следуйте стандартам PSR-12
-
-Используйте английские названия переменных и функций
-
-Комментируйте сложную логику
-
-Рабочий процесс
-Создайте ветку для новой функции
-
-Добавьте тесты (если необходимо)
-
-Обновите документацию
-
-Создайте pull request
-
-Лицензия
-Этот проект является открытым и доступен для использования в образовательных и коммерческих целях.
-
-Поддержка
-При возникновении проблем:
-
-Проверьте логи контейнеров
-
-Убедитесь, что все порты свободны
-
-Проверьте корректность настроек в .env файле
-
-Создайте issue в репозитории проекта
-
-Быстрая команда для запуска всего:
-
-bash
-docker-compose down && docker-compose up -d --build && sleep 10 && docker-compose exec app php artisan migrate --seed
-Приложение готово к использованию по адресу: http://localhost:8000
-
+```
