@@ -1,22 +1,3 @@
-sport-exercises-app/
-├── app/
-│ ├── Models/Exercise.php # Модель упражнения
-│ └── Http/Controllers/ExerciseController.php # Контроллер
-├── database/
-│ ├── migrations/ # Миграции БД
-│ └── seeders/ExerciseSeeder.php # Начальные данные
-├── resources/views/exercises/ # Шаблоны
-│ ├── index.blade.php # Список упражнений
-│ ├── show.blade.php # Детали упражнения
-│ ├── create.blade.php # Форма добавления
-│ └── edit.blade.php # Форма редактирования
-├── routes/web.php # Маршруты
-├── docker-compose.yml # Конфигурация Docker
-├── Dockerfile # Образ приложения
-└── .env # Настройки окружения
-
-text
-
 ## Быстрый старт
 
 ### 1. Клонирование и настройка
