@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fitness-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: fitness_db
+      DB_USERNAME: fitness_user
+      DB_PASSWORD: fitness_password
+    command: >
+      sh -c "php artisan serve --host=0.0.0.0 --port=8000"
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: fitness-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fitness_db
+      POSTGRES_USER: fitness_user
+      POSTGRES_PASSWORD: fitness_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
